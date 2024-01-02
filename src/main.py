@@ -1,6 +1,13 @@
-def main():
-    print("Hello world")
+from fastapi import FastAPI
+
+tracker = FastAPI(
+    title="Tracker",
+    description="Special tracker with Telegram bot assistance",
+)
 
 
-if __name__ == "__main__":
-    main()
+@tracker.get("/")
+def start_answer():
+    return {
+        "answer": "Success",
+    }
