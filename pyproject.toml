@@ -2,13 +2,13 @@
 name = "tracker"
 version = "0.1.0"
 description = ""
-authors = ["Yaroslav <yarikbritov@yandex.ru>"]
+authors = ["Yaroslav <yarikbritov@yandex.ru>", "suredrope"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-uvicorn = {extras = ["standart"], version = "^0.25.0"}
+uvicorn = { extras = ["standart"], version = "^0.25.0" }
 fastapi = "^0.108.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -20,3 +20,17 @@ flake8 = "^6.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks.fmt]
+help = "Format code using black & isort."
+shell = '''
+        isort src/ &
+        black -l 79 src/ &
+        '''
+[tool.poe.tasks.lint]
+help = "Run flake8, black, mypy linters"
+shell = '''
+        flake8 src/ & 
+        black -l 79 --check src/ &
+        mypy --ignore-missing-imports src/
+        '''
