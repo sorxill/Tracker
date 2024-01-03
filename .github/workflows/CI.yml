@@ -1,0 +1,66 @@
+name: CI
+
+on: push
+
+jobs:
+
+  run_tests:
+
+    strategy:
+
+      matrix:
+        python-version: [ 3.10.12 ]
+        os: [ ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
+      - name: Install project dependencies
+        run: |
+          poetry install
+
+      - name: Run tests
+        run: |
+          poetry run pytest
+
+      - name: Run mypy
+        run: |
+          poetry run mypy ./
+
+      - name: Run pylint
+        run: |
+          poetry run pylint ./src
+
+  build:
+    runs-on: ubuntu-latest
+
+    if: github.ref == "refs/heads/main"
+
+    needs: [run_tests]
+
+    steps:
+      - name: Login in Docker
+        run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+
+      - uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build -t ${{ vars.DOCKER_PROJECT }}:${GITHUB_REF_NAME} -f Dockerfile .
+
+      - name: Push image to docker
+        run: docker push ${{ vars.DOCKER_Project }}:${GITHUB_REF_NAME}
