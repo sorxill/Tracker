@@ -13,6 +13,6 @@ RUN pip install poetry
 COPY . /code
 
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi --without test-dev
+    && poetry install --no-interaction --no-ansi --without dev
 
 CMD ["poetry", "run", "uvicorn", "src.main:tracker", "--host", "0.0.0.0", "--port", "8000"]
