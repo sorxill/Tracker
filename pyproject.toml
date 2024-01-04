@@ -42,8 +42,8 @@ shell = '''
         black -l 79 --check src/
         '''
 
-[tool.poe.tasks.coverage]
-help = "Run coverage report"
+[tool.poe.tasks.test]
+help = "Run pytest and coverage report"
 shell = '''
-        coverage report -m --skip-covered
+        coverage run -m pytest && coverage report -m --skip-covered
         '''
