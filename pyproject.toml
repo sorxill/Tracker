@@ -12,10 +12,12 @@ uvicorn = { extras = ["standart"], version = "^0.25.0" }
 fastapi = "^0.108.0"
 
 [tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+httpx = "^0.26.0"
 black = "^23.12.1"
 mypy = "^1.8.0"
-isort = "^5.13.2"
-flake8 = "^6.1.0"
+pylint = "^3.0.3"
+poethepoet = {extras = ["poetry-plugin"], version = "^0.24.4"}
 
 [build-system]
 requires = ["poetry-core"]
@@ -24,13 +26,14 @@ build-backend = "poetry.core.masonry.api"
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
 shell = '''
-        isort src/ &
-        black -l 79 src/ &
+        isort src/
+        black -l 79 src/
         '''
+
 [tool.poe.tasks.lint]
 help = "Run flake8, black, mypy linters"
 shell = '''
-        flake8 src/ & 
-        black -l 79 --check src/ &
         mypy --ignore-missing-imports src/
+        pylint src/
+        black -l 79 --check src/
         '''

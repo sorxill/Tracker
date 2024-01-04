@@ -1,3 +1,6 @@
+"""
+Main endpoint
+"""
 from fastapi import FastAPI
 
 tracker = FastAPI(
@@ -8,6 +11,9 @@ tracker = FastAPI(
 
 @tracker.get("/")
 def start_answer():
+    """
+    Check the tests and e.t.c
+    """
     return {
         "answer": "Success",
     }
