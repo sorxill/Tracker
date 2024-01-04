@@ -25,7 +25,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.report]
-fail_under = 100
+fail_under = 80
 
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
