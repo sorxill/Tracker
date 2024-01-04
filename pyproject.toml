@@ -17,11 +17,15 @@ httpx = "^0.26.0"
 black = "^23.12.1"
 mypy = "^1.8.0"
 pylint = "^3.0.3"
-poethepoet = {extras = ["poetry-plugin"], version = "^0.24.4"}
+poethepoet = { extras = ["poetry-plugin"], version = "^0.24.4" }
+coverage = { extras = ["toml"], version = "^7.4.0" }
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.report]
+fail_under = 80
 
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
@@ -31,9 +35,15 @@ shell = '''
         '''
 
 [tool.poe.tasks.lint]
-help = "Run flake8, black, mypy linters"
+help = "Run pylint, black, mypy linters"
 shell = '''
         mypy --ignore-missing-imports src/
         pylint src/
         black -l 79 --check src/
+        '''
+
+[tool.poe.tasks.test]
+help = "Run pytest and coverage report"
+shell = '''
+        coverage run -m pytest && coverage report -m --skip-covered
         '''
