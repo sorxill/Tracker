@@ -32,23 +32,20 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          poetry install
+          poetry install --no-interaction
 
       - name: Run tests
         run: |
           poetry run pytest
 
-      - name: Run mypy
+      - name: Run formatting
         run: |
-          poetry run mypy ./
+          poetry run poe fmt      
 
-      - name: Run pylint
+      - name: Run lints
         run: |
-          poetry run pylint ./src
-
-      - name: Run black
-        run: |
-          poetry run black ./src --check
+          poetry run poe lint
+          
 
   build:
     runs-on: ubuntu-latest
