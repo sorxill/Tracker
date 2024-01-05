@@ -1,13 +1,10 @@
 """
 Create async session connect to database
 """
+
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_sessionmaker,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost/"
 
@@ -21,8 +18,5 @@ async_session = async_sessionmaker(
 
 async def get_db() -> AsyncGenerator:
     """Dependency for getting async session"""
-    try:
-        session: AsyncSession = async_session()
+    async with async_session() as session:
         yield session
-    finally:
-        await session.close()
