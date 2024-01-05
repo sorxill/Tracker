@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.actions.user import create_new_user
+from src.api.actions.user.user_crud import create_new_user
 from src.api.schemas import ShowUser, UserCreate
 from src.db.session import get_db
 
