@@ -28,7 +28,7 @@ class UserCreate(BaseModel):
     email: EmailStr
 
     @field_validator("name")
-    def validate_name(cls, value):
+    def validate_name(self, value):
         if not LETTER_MATCH_PATTERN.match(value):
             raise HTTPException(
                 status_code=422, detail="Name should contains only letters"
@@ -36,7 +36,7 @@ class UserCreate(BaseModel):
         return value
 
     @field_validator("surname")
-    def validate_surname(cls, value):
+    def validate_surname(self, value):
         if not LETTER_MATCH_PATTERN.match(value):
             raise HTTPException(
                 status_code=422, detail="Surname should contains only letters"
