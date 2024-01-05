@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import and_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.modles import User
+from src.db.models import User
 
 
 class UserDAL:
@@ -33,11 +33,12 @@ class UserDAL:
         user_row = res.fetchone()
         if user_row is not None:
             return user_row[0]
+        return None
 
     async def update_user(self, user_id: UUID, **kwargs) -> UUID | None:
         query = (
             update(User)
-            .where(and_(User.user_id == user_id, User.is_active is True))
+            .where(and_(User.user_id == user_id, User.is_active))
             .values(kwargs)
             .returning(User.user_id)
         )
@@ -45,3 +46,4 @@ class UserDAL:
         update_user_id_row = res.fetchone()
         if update_user_id_row is not None:
             return update_user_id_row[0]
+        return None
