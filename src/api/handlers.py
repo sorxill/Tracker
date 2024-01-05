@@ -19,4 +19,4 @@ async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)) -> S
         return await create_new_user(body, db)
     except IntegrityError as err:
         logger.error(err)
-        raise HTTPException(status_code=503, detail=f"Database error: {err}")
+        raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
