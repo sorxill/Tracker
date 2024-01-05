@@ -38,7 +38,7 @@ disable = ["C0114, C0115, C0116, R0903"]
 help = "Format code using black & isort."
 shell = '''
         isort src/
-        black -l 90 src/
+        black src/
         '''
 
 [tool.poe.tasks.lint]
@@ -46,7 +46,7 @@ help = "Run pylint, black, mypy linters"
 shell = '''
         mypy --ignore-missing-imports src/
         pylint src/
-        black -l 90 --check src/
+        black --check src/
         '''
 
 [tool.poe.tasks.test]
