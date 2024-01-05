@@ -1,5 +1,5 @@
 from src.api.schemas import ShowUser, UserCreate
-from src.db.dals import UserDAL
+from src.db.dals.user_dal import UserDAL
 
 
 async def create_new_user(body: UserCreate, session) -> ShowUser:
