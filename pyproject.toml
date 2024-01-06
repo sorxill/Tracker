@@ -36,6 +36,8 @@ fail_under = 80
 disable = ["C0114, C0115, C0116, R0903"]
 load-plugins = "pylint_pydantic"
 
+[tool.mypy]
+no_warn_no_return = true
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
 shell = '''
