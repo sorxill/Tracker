@@ -23,6 +23,7 @@ mypy = "^1.8.0"
 pylint = "^3.0.3"
 poethepoet = { extras = ["poetry-plugin"], version = "^0.24.4" }
 coverage = { extras = ["toml"], version = "^7.4.0" }
+pylint-pydantic = "^0.3.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -33,6 +34,7 @@ fail_under = 80
 
 [tool.pylint]
 disable = ["C0114, C0115, C0116, R0903"]
+load-plugins = "pylint_pydantic"
 
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
