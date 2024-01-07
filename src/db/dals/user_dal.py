@@ -24,7 +24,7 @@ class UserDAL:
             email=email,
         )
         self.db_session.add(new_user)
-        await self.db_session.flush()
+        await self.db_session.commit()
         return new_user
 
     async def get_user_by_email(self, email: str) -> User | None:

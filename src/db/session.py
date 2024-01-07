@@ -6,7 +6,7 @@ from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-DATABASE_URL = "postgresql+asyncpg://postgres:postgres@0.0.0.0:5432/postgres"
+DATABASE_URL = "postgresql+asyncpg://postgres:postgres@fastapi_db:5432/postgres"
 
 engine = create_async_engine(
     DATABASE_URL,
@@ -14,8 +14,9 @@ engine = create_async_engine(
 )
 
 async_session = async_sessionmaker(
-    engine,
+    bind=engine,
     expire_on_commit=False,
+    autoflush=True,
 )
 
 
