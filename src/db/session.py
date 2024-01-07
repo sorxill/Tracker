@@ -4,7 +4,7 @@ Create async session connect to database
 
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 DATABASE_URL = "postgresql+asyncpg://postgres:postgres@0.0.0.0:5432/postgres"
 

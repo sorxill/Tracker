@@ -42,7 +42,7 @@ async def read_user_by_id(user_id, session) -> User | None:
             return user
 
 
-async def delete_user(user_id, session) -> UUID | None:
+async def delete_user(user_id, session) -> User | None:
     async with session.begin():
         user_dal = UserDAL(session)
         deleted_user_id = await user_dal.delete_user(
@@ -51,7 +51,7 @@ async def delete_user(user_id, session) -> UUID | None:
         return deleted_user_id
 
 
-async def update_user(updated_user_params: dict, user_id: UUID, session) -> UUID | None:
+async def update_user(updated_user_params: dict, user_id: UUID, session) -> User | None:
     async with session.begin():
         user_dal = UserDAL(session)
         updated_user_id = await user_dal.update_user(

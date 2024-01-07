@@ -41,7 +41,7 @@ class UserDAL:
         if user_row is not None:
             return user_row[0]
 
-    async def update_user(self, user_id: UUID, **kwargs) -> UUID | None:
+    async def update_user(self, user_id: UUID, **kwargs) -> User | None:
         query = (
             update(User)
             .where(User.user_id == user_id, User.is_active)
@@ -53,7 +53,7 @@ class UserDAL:
         if update_user_id_row is not None:
             return update_user_id_row[0]
 
-    async def delete_user(self, user_id: UUID) -> UUID | None:
+    async def delete_user(self, user_id: UUID) -> User | None:
         query = (
             update(User)
             .where(User.user_id == user_id, User.is_active)

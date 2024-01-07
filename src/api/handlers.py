@@ -19,7 +19,7 @@ user_router = APIRouter(prefix="/user")
 
 
 @user_router.post("/create", response_model=ShowUser)
-async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)) -> ShowUser:
+async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
     try:
         return await create_new_user(body, db)
     except IntegrityError as err:
@@ -31,12 +31,13 @@ async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)) -> S
 async def get_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
-) -> ShowUser:
+):
     user = await read_user_by_id(user_id, db)
     if user is None:
         raise HTTPException(
             status_code=404, detail=f"User with id {user_id} not found."
         )
+
     return user
 
 
@@ -44,7 +45,7 @@ async def get_user_by_id(
 async def get_user_by_email(
     email: str,
     db: AsyncSession = Depends(get_db),
-) -> ShowUser:
+):
     user = await read_user_by_email(email, db)
     if user is None:
         raise HTTPException(
