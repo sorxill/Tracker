@@ -14,6 +14,7 @@ asyncpg = "^0.29.0"
 psycopg2-binary = "^2.9.9"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.25" }
 alembic = "^1.13.1"
+pydantic = {extras = ["email"], version = "^2.5.3"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"
@@ -35,6 +36,11 @@ fail_under = 80
 [tool.pylint]
 disable = ["C0114, C0115, C0116, R0903"]
 load-plugins = "pylint_pydantic"
+
+
+[tool.mypy]
+no_warn_no_return = true
+
 
 [tool.poe.tasks.fmt]
 help = "Format code using black & isort."
