@@ -5,20 +5,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.actions.user.user_crud import (
+from src.api.actions.user.crud import (
     create_new_user,
+    delete_user,
     read_user_by_email,
     read_user_by_id,
     update_user,
-    delete_user,
 )
-from src.api.schemas.user_schemas import (
-    ShowUser,
-    UserCreate,
-    UserUpdateRequest,
-    UserDelete,
-)
-
+from src.api.schemas.user import ShowUser, UserCreate, UserDelete, UserUpdateRequest
 from src.db.session import get_db
 
 logger = getLogger(__name__)
