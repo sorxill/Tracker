@@ -5,7 +5,7 @@ Main endpoint
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.handlers import user_router
+from src.api.handlers.user_handlers import user_router
 
 tracker = FastAPI(
     title="Tracker",
