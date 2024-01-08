@@ -10,11 +10,13 @@ from src.api.actions.user.user_crud import (
     read_user_by_email,
     read_user_by_id,
     update_user,
+    delete_user,
 )
 from src.api.schemas.user_schemas import (
     ShowUser,
     UserCreate,
     UserUpdateRequest,
+    UserDelete,
 )
 
 from src.db.session import get_db
@@ -81,3 +83,21 @@ async def update_user_by_id(
     except IntegrityError as err:
         raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
     return updated_user
+
+
+@user_router.delete("/delete_user_by_id", response_model=UserDelete)
+async def delete_user_by_id(
+    user_id: UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    check_id = await read_user_by_id(user_id, db)
+    if check_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"User with id {user_id} not found."
+        )
+    deleted_user_id = await delete_user(user_id, db)
+    if deleted_user_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"User with id {user_id} not found."
+        )
+    return UserDelete(deleted_user_id=deleted_user_id)

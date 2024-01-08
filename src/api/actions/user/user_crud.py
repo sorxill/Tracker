@@ -42,7 +42,7 @@ async def read_user_by_id(user_id, session) -> User | None:
             return user
 
 
-async def delete_user(user_id, session) -> User | None:
+async def delete_user(user_id, session) -> UUID | None:
     async with session.begin():
         user_dal = UserDAL(session)
         deleted_user_id = await user_dal.dal_delete_user(
