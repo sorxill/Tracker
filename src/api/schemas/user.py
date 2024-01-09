@@ -1,15 +1,15 @@
 import re
-import uuid
+
 from typing import Optional
 
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, UUID4
 
 LETTER_MATCH_PATTERN = re.compile(r"^[а-яА-Яa-zA-Z\-]+$")
 
 
 class UserShow(BaseModel):
-    user_id: uuid.UUID
+    user_id: UUID4
     name: str
     surname: str
     email: EmailStr
@@ -39,7 +39,7 @@ class UserCreate(BaseModel):
 
 
 class UserDelete(BaseModel):
-    deleted_user_id: uuid.UUID
+    deleted_user_id: UUID4
 
 
 class UserUpdateRequest(BaseModel):

@@ -54,7 +54,7 @@ async def delete_user(user_id, session) -> UUID | None:
 async def update_user(updated_user_params: dict, user_id: UUID, session) -> User | None:
     async with session.begin():
         user_dal = UserDAL(session)
-        updated_user_id = await user_dal.dal_update_user(
+        updated_user = await user_dal.dal_update_user(
             user_id=user_id, **updated_user_params
         )
-        return updated_user_id
+        return updated_user
