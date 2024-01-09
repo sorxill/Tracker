@@ -2,12 +2,12 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.schemas.user import ShowUser, UserCreate
+from src.api.schemas.user import UserCreate, UserShow
 from src.db.dals.user import UserDAL
 from src.db.models.user import User
 
 
-async def create_new_user(body: UserCreate, session: AsyncSession) -> ShowUser:
+async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
     async with session.begin():
         user_dal = UserDAL(session)
         user = await user_dal.dal_create_user(
@@ -15,7 +15,7 @@ async def create_new_user(body: UserCreate, session: AsyncSession) -> ShowUser:
             surname=body.surname,
             email=body.email,
         )
-        return ShowUser(
+        return UserShow(
             user_id=user.user_id,
             name=user.name,
             surname=user.surname,
