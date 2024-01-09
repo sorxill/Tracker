@@ -3,12 +3,12 @@ import uuid
 from typing import Optional
 
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, field_validator, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 LETTER_MATCH_PATTERN = re.compile(r"^[а-яА-Яa-zA-Z\-]+$")
 
 
-class ShowUser(BaseModel):
+class UserShow(BaseModel):
     user_id: uuid.UUID
     name: str
     surname: str

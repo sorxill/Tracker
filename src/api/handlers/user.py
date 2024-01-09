@@ -12,7 +12,7 @@ from src.api.actions.user.crud import (
     read_user_by_id,
     update_user,
 )
-from src.api.schemas.user import ShowUser, UserCreate, UserDelete, UserUpdateRequest
+from src.api.schemas.user import UserCreate, UserDelete, UserShow, UserUpdateRequest
 from src.db.session import get_db
 
 logger = getLogger(__name__)
@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 user_router = APIRouter(prefix="/user")
 
 
-@user_router.post("/create", response_model=ShowUser)
+@user_router.post("/create", response_model=UserShow)
 async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
     try:
         return await create_new_user(body, db)
@@ -29,7 +29,7 @@ async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
 
 
-@user_router.get("/read_by_id", response_model=ShowUser)
+@user_router.get("/read_by_id", response_model=UserShow)
 async def get_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
@@ -43,7 +43,7 @@ async def get_user_by_id(
     return user
 
 
-@user_router.get("/get_by_email", response_model=ShowUser)
+@user_router.get("/get_by_email", response_model=UserShow)
 async def get_user_by_email(
     email: str,
     db: AsyncSession = Depends(get_db),
@@ -56,7 +56,7 @@ async def get_user_by_email(
     return user
 
 
-@user_router.patch("/update_user", response_model=ShowUser)
+@user_router.patch("/update_user", response_model=UserShow)
 async def update_user_by_id(
     user_id: UUID,
     body: UserUpdateRequest,
