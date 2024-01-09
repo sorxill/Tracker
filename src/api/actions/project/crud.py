@@ -1,6 +1,6 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from uuid import UUID
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas.project import ProjectCreate, ProjectShow
 from src.db.dals.project import ProjectDAL
