@@ -1,4 +1,3 @@
-import uuid
 from typing import Optional
 
 from pydantic import UUID4, BaseModel, Field
@@ -22,6 +21,6 @@ class ProjectDelete(BaseModel):
     project_id: UUID4
 
 
-class ProjectUpdateRequest(BaseModel):
+class ProjectUpdate(BaseModel):
     name: Optional[str] = Field(min_length=3, max_length=25)
     description: Optional[str] = Field(max_length=120)

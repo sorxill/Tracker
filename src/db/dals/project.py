@@ -34,10 +34,19 @@ class ProjectDAL:
         if project_row is not None:
             return project_row[0]
 
-    async def dal_update_project(self, project_id: UUID, **kwargs) -> Project | None:
+    async def dal_get_project_by_id(self, project_id: UUID) -> Project | None:
+        query = select(Project).where(
+            Project.project_id == project_id, Project.is_active
+        )
+        res = await self.db_session.execute(query)
+        project_row = res.fetchone()
+        if project_row is not None:
+            return project_row[0]
+
+    async def dal_update_project(self, project_name: str, **kwargs) -> Project | None:
         query = (
             update(Project)
-            .where(Project.project_id == project_id, Project.is_active)
+            .where(Project.name == project_name, Project.is_active)
             .values(kwargs)
             .returning(Project)
         )

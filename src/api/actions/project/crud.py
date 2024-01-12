@@ -32,6 +32,14 @@ async def read_project_by_name(name: str, session: AsyncSession) -> Project | No
             return project
 
 
+async def read_project_by_id(project_id: UUID, session: AsyncSession) -> Project | None:
+    async with session.begin():
+        project_dal = ProjectDAL(session)
+        project = await project_dal.dal_get_project_by_id(project_id)
+        if project is not None:
+            return project
+
+
 async def delete_project(project_id, session) -> UUID | None:
     async with session.begin():
         project_dal = ProjectDAL(session)
@@ -42,11 +50,13 @@ async def delete_project(project_id, session) -> UUID | None:
 
 
 async def update_project(
-    updated_project_params: dict, project_id: UUID, session
+    project_name: str,
+    session,
+    updated_project_params: dict,
 ) -> Project | None:
     async with session.begin():
         project_dal = ProjectDAL(session)
         updated_project = await project_dal.dal_update_project(
-            project_id=project_id, **updated_project_params
+            project_name=project_name, **updated_project_params
         )
         return updated_project
