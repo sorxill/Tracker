@@ -7,16 +7,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.actions.project.crud import (
     create_new_project,
-    read_project_by_name,
-    update_project,
     delete_project,
     read_project_by_id,
+    read_project_by_name,
+    update_project,
 )
 from src.api.schemas.project import (
-    ProjectShow,
     ProjectCreate,
-    ProjectUpdate,
     ProjectDelete,
+    ProjectShow,
+    ProjectUpdate,
 )
 from src.db.session import get_db
 
