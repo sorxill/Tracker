@@ -5,14 +5,14 @@ Main endpoint
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.handlers.user import user_router
+from src.api.handlers import routers
 
 tracker = FastAPI(
     title="Tracker",
     description="Special tracker with Telegram bot assistance",
 )
 
-tracker.include_router(user_router)
+tracker.include_router(routers)
 
 
 @tracker.get("/")
