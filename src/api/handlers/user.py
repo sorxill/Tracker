@@ -29,7 +29,7 @@ async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
 
 
-@user_router.get("/read_by_id", response_model=UserShow)
+@user_router.get("/get_by_id", response_model=UserShow)
 async def get_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
@@ -56,7 +56,7 @@ async def get_user_by_email(
     return user
 
 
-@user_router.patch("/update_user", response_model=UserShow)
+@user_router.patch("/update", response_model=UserShow)
 async def update_user_by_id(
     user_id: UUID,
     body: UserUpdateRequest,
@@ -79,7 +79,7 @@ async def update_user_by_id(
     return updated_user
 
 
-@user_router.delete("/delete_user_by_id", response_model=UserDelete)
+@user_router.delete("/delete", response_model=UserDelete)
 async def delete_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
