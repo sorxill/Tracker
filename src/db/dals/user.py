@@ -17,11 +17,13 @@ class UserDAL:
         name: str,
         surname: str,
         email: str,
+        password: bytes,
     ) -> User:
         new_user = User(
             name=name,
             surname=surname,
             email=email,
+            hashed_password=password,
         )
         self.db_session.add(new_user)
         await self.db_session.commit()
