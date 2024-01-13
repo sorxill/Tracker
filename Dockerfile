@@ -6,7 +6,7 @@ RUN pip install --upgrade pip
 RUN apk add gcc musl-dev libffi-dev
 RUN pip install poetry
 
-COPY . .
+COPY . /app
 
 EXPOSE 4000
 
