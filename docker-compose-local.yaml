@@ -4,10 +4,11 @@ services:
   fastapi_app:
     container_name: fastapi_app
     image: sorxill/tracker:test_base
+    volumes:
+      - ./src:/app/src
     ports:
       - "4000:4000"
     build: .
-
 
   fastapi_db:
     container_name: fastapi_db
@@ -20,7 +21,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-
 
 volumes:
   pgdata: {}
