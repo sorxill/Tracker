@@ -3,6 +3,7 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas.user import UserCreate, UserShow
+from src.auth.hasher import Hasher
 from src.db.dals.user import UserDAL
 from src.db.models.user import User
 
@@ -14,6 +15,7 @@ async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
             name=body.name,
             surname=body.surname,
             email=body.email,
+            password=Hasher.hash_password(body.password),
         )
         return UserShow(
             user_id=user.user_id,
@@ -21,6 +23,7 @@ async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
             surname=user.surname,
             email=user.email,
             is_active=user.is_active,
+            password=user.hashed_password,
         )
 
 

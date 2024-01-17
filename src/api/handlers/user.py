@@ -17,7 +17,7 @@ from src.db.session import get_db
 
 logger = getLogger(__name__)
 
-user_router = APIRouter(prefix="/user")
+user_router = APIRouter(prefix="/user", tags=["user"])
 
 
 @user_router.post("/create", response_model=UserShow)

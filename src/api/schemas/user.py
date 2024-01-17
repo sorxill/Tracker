@@ -11,6 +11,7 @@ class UserShow(BaseModel):
     user_id: UUID4
     name: str
     surname: str
+    password: bytes
     email: EmailStr
     is_active: bool
 
@@ -19,6 +20,7 @@ class UserCreate(BaseModel):
     name: str
     surname: str
     email: EmailStr
+    password: str
 
     @field_validator("name")
     def validate_name(cls, value):
@@ -61,3 +63,8 @@ class UserUpdateRequest(BaseModel):
                 status_code=422, detail="Surname should contains only letters"
             )
         return value
+
+
+class UserForToken(BaseModel):
+    email: EmailStr
+    name: str

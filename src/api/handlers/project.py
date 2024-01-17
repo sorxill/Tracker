@@ -22,7 +22,7 @@ from src.db.session import get_db
 
 logger = getLogger(__name__)
 
-project_router = APIRouter(prefix="/project")
+project_router = APIRouter(prefix="/project", tags=["project"])
 
 
 @project_router.post("/create", response_model=ProjectShow)
