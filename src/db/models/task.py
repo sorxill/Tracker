@@ -4,7 +4,7 @@ from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from . import Base
+from .base import Base
 
 
 class Task(Base):
@@ -23,8 +23,8 @@ class Task(Base):
     collaborators: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(DateTime)
 
-    project = relationship("Project", back_populates="tasks")
-    author = relationship("User", back_populates="tasks")
+    project = relationship("Project", backref="tasks")
+    author = relationship("User", backref="tasks")
 
     def __repr__(self) -> str:
         return f"Task(task_id={self.task_id!r}, project_id={self.project_id!r})"

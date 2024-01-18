@@ -16,7 +16,7 @@ from src.db.session import get_db
 
 logger = getLogger(__name__)
 
-task_router = APIRouter(prefix="/task")
+task_router = APIRouter(prefix="/task", tags=["/task"])
 
 
 @task_router.post("/create", response_model=TaskShow)

@@ -3,11 +3,12 @@ import uuid
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.db.models import Base
+from .base import Base
 
 
 class ProjectUser(Base):
     __tablename__ = "projects_users"
+
     project_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("projects.project_id"), primary_key=True
     )

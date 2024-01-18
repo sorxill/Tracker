@@ -13,7 +13,7 @@ class ProjectShow(BaseModel):
 
 class ProjectCreate(BaseModel):
     name: str = Field(min_length=3, max_length=25)
-    description: Optional[str] = Field(None, max_length=120)
+    description: Optional[str] = Field(max_length=120)
     author: UUID4
 
 
