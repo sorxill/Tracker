@@ -3,6 +3,7 @@ from uuid import UUID
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.db.models import ProjectUser
 from src.db.models.project import Project
 
 
@@ -21,7 +22,7 @@ class ProjectDAL:
         new_project = Project(
             name=name,
             author=author,
-            descriprion=kwargs,
+            description=kwargs.get("description"),
         )
         self.db_session.add(new_project)
         await self.db_session.commit()

@@ -20,7 +20,7 @@ class TaskDAL:
         description: str,
         task_type: str,
         collaborators: UUID,
-        timestamp: DateTime,
+        **kwargs,
     ) -> Task:
         new_task = Task(
             project_id=project_id,
@@ -29,7 +29,7 @@ class TaskDAL:
             description=description,
             task_type=task_type,
             collaborators=collaborators,
-            timestamp=timestamp,
+            timestamp=kwargs.get("timestamp"),
         )
         self.db_session.add(new_task)
         await self.db_session.commit()
