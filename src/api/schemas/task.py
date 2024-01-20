@@ -21,8 +21,8 @@ class TaskShow(BaseModel):
     task_type: TaskTypeEnum
     # collaborators: type[set[UUID4]] = conset(UUID4, min_length=1)
     collaborators: UUID4
-    description: Optional[str] = Field(max_length=250)
-    timestamp: Optional[datetime]
+    description: Optional[str] = Field(max_length=250, default=None)
+    timestamp: Optional[datetime] = None
 
 
 class TaskCreate(BaseModel):
@@ -32,12 +32,13 @@ class TaskCreate(BaseModel):
     task_type: TaskTypeEnum
     # collaborators: type[set[UUID4]] = conset(UUID4, min_length=1)
     collaborators: UUID4
-    description: Optional[str] = Field(max_length=250)
-    timestamp: Optional[datetime]
+    description: Optional[str] = Field(max_length=250, default=None)
+    timestamp: Optional[datetime] = None
 
-    @field_validator("timestamp")
-    def validate_timestamp(cls, timestamp, values):
-        if timestamp and values.get("task_type") != TaskTypeEnum.MILESTONE:
+    @classmethod
+    @field_validator("timestamp", "task_type")
+    def validate_timestamp(cls, timestamp, *task_type):
+        if timestamp and task_type != TaskTypeEnum.MILESTONE:
             raise HTTPException(
                 status_code=422,
                 detail="Timestamp is only available for task_type 'milestone'",
