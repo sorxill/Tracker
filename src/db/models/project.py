@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import Boolean, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 
@@ -19,6 +19,8 @@ class Project(Base):
     )
     description: Mapped[str] = mapped_column(String, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    project_task = relationship("Task", back_populates="project")
 
     def __repr__(self) -> str:
         return f"Project(project_id={self.project_id!r}, name={self.name!r},\

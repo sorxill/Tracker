@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import Boolean, String
 from sqlalchemy.dialects.postgresql import BYTEA, UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 
@@ -18,6 +18,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     hashed_password: Mapped[BYTEA] = mapped_column(BYTEA, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    author_task = relationship("Task", back_populates="author")
 
     def __repr__(self) -> str:
         return f"User(user_id={self.user_id!r}, name={self.name!r}, \
