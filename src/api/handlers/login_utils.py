@@ -21,7 +21,9 @@ oauth2_scheme = OAuth2PasswordBearer(
 
 
 async def validate_auth_user(
-    username: str = Form(),
+    username: str = Form(
+        description="This form for your Email",
+    ),
     password: str = Form(),
     db: AsyncSession = Depends(get_db),
 ):
