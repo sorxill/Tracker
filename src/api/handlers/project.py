@@ -12,12 +12,14 @@ from src.api.actions.project.crud import (
     read_project_by_name,
     update_project,
 )
+from src.api.handlers.login import auth_check_user_info
 from src.api.schemas.project import (
     ProjectCreate,
     ProjectDelete,
     ProjectShow,
     ProjectUpdate,
 )
+from src.api.schemas.user import UserForToken
 from src.db.session import get_db
 
 logger = getLogger(__name__)
@@ -26,7 +28,11 @@ project_router = APIRouter(prefix="/project", tags=["project"])
 
 
 @project_router.post("/create", response_model=ProjectShow)
-async def create_project(body: ProjectCreate, db: AsyncSession = Depends(get_db)):
+async def create_project(
+    body: ProjectCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
     try:
         return await create_new_project(body, db)
     except IntegrityError as err:
@@ -38,6 +44,7 @@ async def create_project(body: ProjectCreate, db: AsyncSession = Depends(get_db)
 async def get_project_by_name(
     name: str,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     project = await read_project_by_name(name, db)
     if project is None:
@@ -53,6 +60,7 @@ async def update_project_by_name(
     body: ProjectUpdate,
     name: str,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     project_params = body.model_dump(exclude_none=True)
     if project_params == {}:
@@ -75,6 +83,7 @@ async def update_project_by_name(
 async def delete_project_by_id(
     project_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     check_id = await read_project_by_id(project_id, db)
     if check_id is None:
