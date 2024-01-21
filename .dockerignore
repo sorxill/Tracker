@@ -2,7 +2,7 @@
 *.pyo
 *.pyd
 .Python
-env
+.env
 .tox
 .coverage
 .coverage.*
