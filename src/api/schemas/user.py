@@ -67,4 +67,4 @@ class UserUpdateRequest(BaseModel):
 
 class UserForToken(BaseModel):
     email: EmailStr
-    name: str
+    user_id: UUID4
