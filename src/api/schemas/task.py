@@ -47,11 +47,11 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    name: Optional[str] = Field(min_length=3, max_length=35)
-    task_type: Optional[TaskTypeEnum]
+    name: Optional[str] = Field(min_length=3, max_length=35, default=None)
+    task_type: Optional[TaskTypeEnum] = None
     collaborators: UUID4
-    description: Optional[str] = Field(max_length=250)
-    timestamp: Optional[datetime]
+    description: Optional[str] = Field(max_length=250, default=None)
+    timestamp: Optional[datetime] = None
 
     @field_validator("timestamp")
     def validate_timestamp(cls, timestamp, values):

@@ -11,7 +11,7 @@ class UserShow(BaseModel):
     user_id: UUID4
     name: str
     surname: str
-    password: bytes
+    hashed_password: bytes
     email: EmailStr
     is_active: bool
 
@@ -44,9 +44,9 @@ class UserDelete(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    name: Optional[str] = Field(min_length=1)
-    surname: Optional[str] = Field(min_length=1)
-    email: Optional[EmailStr]
+    name: Optional[str] = Field(min_length=1, default=None)
+    surname: Optional[str] = Field(min_length=1, default=None)
+    email: Optional[EmailStr] = None
 
     @field_validator("name")
     def validate_name(cls, value):
@@ -67,4 +67,4 @@ class UserUpdateRequest(BaseModel):
 
 class UserForToken(BaseModel):
     email: EmailStr
-    name: str
+    user_id: UUID4

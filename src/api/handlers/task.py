@@ -11,16 +11,22 @@ from src.api.actions.task.crud import (
     read_task_by_id,
     update_task,
 )
+from src.api.handlers.login import auth_check_user_info
 from src.api.schemas.task import TaskCreate, TaskDelete, TaskShow, TaskUpdate
+from src.api.schemas.user import UserForToken
 from src.db.session import get_db
 
 logger = getLogger(__name__)
 
-task_router = APIRouter(prefix="/task", tags=["/task"])
+task_router = APIRouter(prefix="/task", tags=["task"])
 
 
 @task_router.post("/create", response_model=TaskShow)
-async def create_task(body: TaskCreate, db: AsyncSession = Depends(get_db)):
+async def create_task(
+    body: TaskCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
     try:
         return await create_new_task(body, db)
     except IntegrityError as err:
@@ -32,6 +38,7 @@ async def create_task(body: TaskCreate, db: AsyncSession = Depends(get_db)):
 async def get_task_by_id(
     task_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     task = await read_task_by_id(task_id, db)
     if task is None:
@@ -47,6 +54,7 @@ async def update_task_by_id(
     body: TaskUpdate,
     task_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     task_params = body.model_dump(exclude_none=True)
     if task_params == {}:
@@ -69,6 +77,7 @@ async def update_task_by_id(
 async def delete_task_by_id(
     task_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     deleted_task_id = await delete_task(task_id, db)
     if deleted_task_id is None:

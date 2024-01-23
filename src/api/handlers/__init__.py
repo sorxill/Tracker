@@ -5,7 +5,7 @@ from .project import project_router
 from .task import task_router
 from .user import user_router
 
-routers = APIRouter()
+routers = APIRouter(prefix="/api")
 routers.include_router(project_router)
 routers.include_router(user_router)
 routers.include_router(login_router)

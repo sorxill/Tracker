@@ -22,5 +22,5 @@ class ProjectDelete(BaseModel):
 
 
 class ProjectUpdate(BaseModel):
-    name: Optional[str] = Field(min_length=3, max_length=25)
-    description: Optional[str] = Field(max_length=120)
+    name: Optional[str] = Field(min_length=3, max_length=25, default=None)
+    description: Optional[str] = Field(max_length=120, default=None)

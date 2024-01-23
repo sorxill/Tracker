@@ -12,7 +12,14 @@ from src.api.actions.user.crud import (
     read_user_by_id,
     update_user,
 )
-from src.api.schemas.user import UserCreate, UserDelete, UserShow, UserUpdateRequest
+from src.api.handlers.login import auth_check_user_info
+from src.api.schemas.user import (
+    UserCreate,
+    UserDelete,
+    UserShow,
+    UserUpdateRequest,
+    UserForToken,
+)
 from src.db.session import get_db
 
 logger = getLogger(__name__)
@@ -33,6 +40,7 @@ async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
 async def get_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     user = await read_user_by_id(user_id, db)
     if user is None:
@@ -47,6 +55,7 @@ async def get_user_by_id(
 async def get_user_by_email(
     email: str,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     user = await read_user_by_email(email, db)
     if user is None:
@@ -61,6 +70,7 @@ async def update_user_by_id(
     user_id: UUID,
     body: UserUpdateRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     user_params = body.model_dump(exclude_none=True)
     if user_params == {}:
@@ -83,6 +93,7 @@ async def update_user_by_id(
 async def delete_user_by_id(
     user_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
 ):
     check_id = await read_user_by_id(user_id, db)
     if check_id is None:

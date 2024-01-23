@@ -23,7 +23,7 @@ async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
             surname=user.surname,
             email=user.email,
             is_active=user.is_active,
-            password=user.hashed_password,
+            hashed_password=user.hashed_password,
         )
 
 
