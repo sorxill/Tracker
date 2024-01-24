@@ -4,6 +4,8 @@ services:
   fastapi_app:
     container_name: fastapi_app
     image: sorxill/tracker:test_base
+    env_file:
+      - .env-docker
     volumes:
       - ./src:/app/src
     ports:
@@ -14,9 +16,9 @@ services:
     container_name: fastapi_db
     image: postgres:16.1-alpine3.19
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASS}"
+      POSTGRES_DB: "${DB_NAME}"
     ports:
       - "5432:5432"
     volumes:
