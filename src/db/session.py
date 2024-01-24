@@ -6,7 +6,16 @@ from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
+from configs.app_config import DB_USER, DB_NAME, DB_PORT, DB_HOST, DB_PASS
+
+DATABASE_URL = (
+    f"postgresql+asyncpg://"
+    f"{DB_USER}:"
+    f"{DB_PASS}@"
+    f"{DB_HOST}:"
+    f"{DB_PORT}/"
+    f"{DB_NAME}"
+)
 
 engine = create_async_engine(
     DATABASE_URL,
