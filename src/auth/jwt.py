@@ -3,13 +3,13 @@ from datetime import datetime, timedelta
 import jwt
 
 from configs.app_config import (
+    ALGORITHM_JWT,
+    EXPIRE_MINUTES_JWT,
     PRIVATE_KEY_JWT,
     PUBLIC_KEY_JWT,
-    EXPIRE_MINUTES_JWT,
-    ALGORITHM_JWT,
 )
 
-EXPIRE_M = EXPIRE_MINUTES_JWT
+EXPIRE_M = int(EXPIRE_MINUTES_JWT)
 ALG = ALGORITHM_JWT
 PRIVATE = PRIVATE_KEY_JWT
 PUBLIC = PUBLIC_KEY_JWT

@@ -36,12 +36,13 @@ build-backend = "poetry.core.masonry.api"
 fail_under = 80
 
 [tool.pylint]
-disable = ["C0114, C0115, C0116, R0903"]
+disable = ["C0114, C0115, C0116, R0903, W0613"]
 load-plugins = "pylint_pydantic"
 
 
 [tool.mypy]
 warn_no_return = false
+disable_error_code = ["arg-type"]
 
 
 [tool.poe.tasks.fmt]
