@@ -1,17 +1,14 @@
 from fastapi import Depends, Form, HTTPException
+from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from jwt import InvalidTokenError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from fastapi.security import HTTPBearer, OAuth2PasswordBearer
-
 from src.api.actions.user.crud import read_user_by_email
 from src.api.schemas.user import UserForToken
 from src.auth.hasher import Hasher
-from src.db.session import get_db
-
 from src.auth.jwt import JWT
-
+from src.db.session import get_db
 
 http_bearer = HTTPBearer()
 
@@ -59,7 +56,7 @@ async def get_current_token_payload(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"invalid token error: {e}",
-        )
+        ) from e
     return payload
 
 

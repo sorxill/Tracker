@@ -16,9 +16,9 @@ from src.api.handlers.login import auth_check_user_info
 from src.api.schemas.user import (
     UserCreate,
     UserDelete,
+    UserForToken,
     UserShow,
     UserUpdateRequest,
-    UserForToken,
 )
 from src.db.session import get_db
 
