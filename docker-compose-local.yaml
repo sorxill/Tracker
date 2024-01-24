@@ -11,6 +11,8 @@ services:
     ports:
       - "4000:4000"
     build: .
+    restart: on-failure
+    command: sh /app/docker/app.sh
 
   fastapi_db:
     container_name: fastapi_db
