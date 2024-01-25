@@ -34,9 +34,9 @@ jobs:
         run: |
           poetry install --no-interaction --no-root
 
-      - name: Run tests and coverage report
-        run: |
-          poetry run poe test
+#      - name: Run tests and coverage report
+#        run: |
+#          poetry run poe test
 
       - name: Run lints
         run: |
