@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import DateTime, delete, select, update
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.task import Task

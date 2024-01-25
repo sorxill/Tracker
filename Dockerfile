@@ -11,6 +11,3 @@ COPY . /app
 EXPOSE 4000
 
 RUN poetry install --without dev
-
-
-CMD ["poetry", "run", "uvicorn", "--reload", "src.main:tracker", "--host=0.0.0.0", "--port=4000"]

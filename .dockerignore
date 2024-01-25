@@ -2,7 +2,8 @@
 *.pyo
 *.pyd
 .Python
-env
+.env
+.env-docker
 .tox
 .coverage
 .coverage.*

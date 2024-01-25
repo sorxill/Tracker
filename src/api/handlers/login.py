@@ -2,7 +2,7 @@ from logging import getLogger
 
 from fastapi import APIRouter, Depends
 
-from src.api.handlers.login_utils import validate_auth_user, get_current_auth_user
+from src.api.handlers.login_utils import get_current_auth_user, validate_auth_user
 from src.api.schemas.token import TokenInfo
 from src.api.schemas.user import UserForToken
 from src.auth.jwt import JWT
