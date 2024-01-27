@@ -40,8 +40,8 @@ class Task(Base):
     def __repr__(self) -> str:
         return (
             f"Task(task_id={self.task_id!r}, project_id={self.project_id!r})"
-            # f"author_id={self.author_id!r}, name={self.name!r}, "
-            # f"description={self.description!r}, task_status={self.task_status!r}, "
-            # f"task_type={self.task_type!r}, collaborators={self.collaborators!r}, "
-            # f"timestamp={self.timestamp!r})"
+            f"author_id={self.author_id!r}, name={self.name!r}, "
+            f"description={self.description!r}, task_status={self.task_status!r}, "
+            f"task_type={self.task_type!r}, collaborators={self.collaborators!r}, "
+            f"timestamp={self.timestamp!r})"
         )
