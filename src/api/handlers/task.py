@@ -11,8 +11,15 @@ from src.api.actions.task.crud import (
     read_task_by_id,
     update_task,
 )
+from src.api.actions.task.utils import update_task_status
 from src.api.handlers.login import auth_check_user_info
-from src.api.schemas.task import TaskCreate, TaskDelete, TaskShow, TaskUpdate
+from src.api.schemas.task import (
+    TaskCreate,
+    TaskDelete,
+    TaskShow,
+    TaskUpdate,
+    TaskUpdateStatus,
+)
 from src.api.schemas.user import UserForToken
 from src.db.session import get_db
 
@@ -85,3 +92,25 @@ async def delete_task_by_id(
             status_code=404, detail=f"Task with ID {task_id} not found."
         )
     return TaskDelete(task_id=deleted_task_id)
+
+
+@task_router.patch("/update_status", response_model=TaskShow)
+async def update_task_status_by_id(
+    body: TaskUpdateStatus,
+    task_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
+    task_status = body.task_status
+
+    check_task = await read_task_by_id(task_id, db)
+    if check_task is None:
+        raise HTTPException(
+            status_code=404, detail=f"Task with ID '{task_id}' not found."
+        )
+
+    try:
+        updated_task = await update_task_status(task_id, task_status, db)
+    except IntegrityError as err:
+        raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
+    return updated_task
