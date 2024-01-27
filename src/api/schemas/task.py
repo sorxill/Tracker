@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 
 from fastapi import HTTPException
-from pydantic import UUID4, BaseModel, Field, field_validator
+from pydantic import UUID4, BaseModel, Field, model_validator
 
 
 class TaskTypeEnum(str, Enum):
@@ -45,15 +45,15 @@ class TaskCreate(BaseModel):
     description: Optional[str] = Field(max_length=250, default=None)
     timestamp: Optional[datetime] = None
 
-    @classmethod
-    @field_validator("timestamp", "task_type")
-    def validate_timestamp(cls, timestamp, *task_type):
-        if timestamp and task_type != TaskTypeEnum.MILESTONE:
-            raise HTTPException(
-                status_code=422,
-                detail="Timestamp is only available for task_type 'milestone'",
-            )
-        return timestamp
+    @model_validator(mode="after")
+    def validate_timestamp(self):
+        if self.timestamp:
+            if self.task_type != TaskTypeEnum.MILESTONE:
+                raise HTTPException(
+                    status_code=422,
+                    detail="Timestamp is only available for type 'milestone'",
+                )
+        return self
 
 
 class TaskUpdate(BaseModel):
@@ -63,14 +63,15 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = Field(max_length=250, default=None)
     timestamp: Optional[datetime] = None
 
-    @field_validator("timestamp")
-    def validate_timestamp(cls, timestamp, values):
-        if timestamp and values.get("task_type") != TaskTypeEnum.MILESTONE:
-            raise HTTPException(
-                status_code=422,
-                detail="Timestamp is only available for task_type 'milestone'",
-            )
-        return timestamp
+    @model_validator(mode="after")
+    def validate_timestamp(self):
+        if self.timestamp:
+            if self.task_type != TaskTypeEnum.MILESTONE:
+                raise HTTPException(
+                    status_code=422,
+                    detail="Timestamp is only available for type 'milestone'",
+                )
+        return self
 
 
 class TaskUpdateStatus(BaseModel):
