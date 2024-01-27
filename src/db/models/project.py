@@ -20,7 +20,11 @@ class Project(Base):
     description: Mapped[str] = mapped_column(String, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    project_task = relationship("Task", back_populates="project")
+    project_task_relationship = relationship(
+        "Task",
+        back_populates="project_relationship",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"Project(project_id={self.project_id!r}, name={self.name!r},\
