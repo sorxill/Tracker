@@ -19,7 +19,11 @@ class User(Base):
     hashed_password: Mapped[BYTEA] = mapped_column(BYTEA, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    author_task = relationship("Task", back_populates="author")
+    author_task_relationship = relationship(
+        "Task",
+        back_populates="author_relationship",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"User(user_id={self.user_id!r}, name={self.name!r}, \

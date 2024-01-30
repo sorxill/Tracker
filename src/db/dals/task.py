@@ -1,3 +1,4 @@
+from typing import Sequence
 from uuid import UUID
 
 from sqlalchemy import delete, select, update
@@ -19,6 +20,7 @@ class TaskDAL:
         name: str,
         description: str,
         task_type: str,
+        task_status: str,
         collaborators: UUID,
         **kwargs,
     ) -> Task:
@@ -28,6 +30,7 @@ class TaskDAL:
             name=name,
             description=description,
             task_type=task_type,
+            task_status=task_status,
             collaborators=collaborators,
             timestamp=kwargs.get("timestamp"),
         )
@@ -57,3 +60,25 @@ class TaskDAL:
         deleted_task_id_row = res.fetchone()
         if deleted_task_id_row is not None:
             return deleted_task_id_row[0]
+
+    async def dal_update_task_status(
+        self, task_id: UUID, task_status: str
+    ) -> Task | None:
+        query = (
+            update(Task)
+            .where(Task.task_id == task_id)
+            .values(task_status=task_status)
+            .returning(Task)
+        )
+        res = await self.db_session.execute(query)
+        updated_task_row = res.fetchone()
+        if updated_task_row is not None:
+            return updated_task_row[0]
+
+    async def dal_get_task_by_author(self, author_id: UUID) -> Sequence[Task] | None:
+        query = select(Task).where(Task.author_id == author_id).order_by(Task.timestamp)
+        res = await self.db_session.execute(query)
+        task_row = res.scalars().all()
+        if task_row is None:
+            return None
+        return task_row
