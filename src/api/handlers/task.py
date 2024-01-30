@@ -12,7 +12,7 @@ from src.api.actions.task.crud import (
     read_task_by_id,
     update_task,
 )
-from src.api.actions.task.utils import update_task_status, get_tasks_by_author
+from src.api.actions.task.utils import get_tasks_by_author, update_task_status
 from src.api.actions.user.crud import read_user_by_id
 from src.api.handlers.login import auth_check_user_info
 from src.api.schemas.task import (

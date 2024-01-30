@@ -60,9 +60,7 @@ class TaskCreate(BaseModel):
         if self.task_type == TaskTypeEnum.MILESTONE:
             if self.timestamp:
                 return self
-        raise HTTPException(
-            status_code=422, detail="Type milestone needs timestamp."
-        )
+        raise HTTPException(status_code=422, detail="Type milestone needs timestamp.")
 
 
 class TaskUpdate(BaseModel):
@@ -87,9 +85,7 @@ class TaskUpdate(BaseModel):
         if self.task_type == TaskTypeEnum.MILESTONE:
             if self.timestamp:
                 return self
-        raise HTTPException(
-            status_code=422, detail="Type milestone needs timestamp."
-        )
+        raise HTTPException(status_code=422, detail="Type milestone needs timestamp.")
 
 
 class TaskUpdateStatus(BaseModel):

@@ -1,4 +1,4 @@
-from typing import List
+from typing import Sequence
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,7 +24,7 @@ async def update_task_status(
 async def get_tasks_by_author(
     author_id: UUID,
     session: AsyncSession,
-) -> List[Task] | None:
+) -> Sequence[Task] | None:
     async with session.begin():
         task_dal = TaskDAL(session)
         all_tasks = await task_dal.dal_get_task_by_author(
