@@ -1,3 +1,4 @@
+from typing import Sequence
 from uuid import UUID
 
 from sqlalchemy import delete, select, update
@@ -73,3 +74,11 @@ class TaskDAL:
         updated_task_row = res.fetchone()
         if updated_task_row is not None:
             return updated_task_row[0]
+
+    async def dal_get_task_by_author(self, author_id: UUID) -> Sequence[Task] | None:
+        query = select(Task).where(Task.author_id == author_id).order_by(Task.timestamp)
+        res = await self.db_session.execute(query)
+        task_row = res.scalars().all()
+        if task_row is None:
+            return None
+        return task_row

@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,5 +14,20 @@ async def update_task_status(
 ) -> Task | None:
     async with session.begin():
         task_dal = TaskDAL(session)
-        updated_task = await task_dal.dal_update_task_status(task_id, task_status)
+        updated_task = await task_dal.dal_update_task_status(
+            task_id,
+            task_status,
+        )
         return updated_task
+
+
+async def get_tasks_by_author(
+    author_id: UUID,
+    session: AsyncSession,
+) -> List[Task] | None:
+    async with session.begin():
+        task_dal = TaskDAL(session)
+        all_tasks = await task_dal.dal_get_task_by_author(
+            author_id,
+        )
+        return all_tasks

@@ -55,6 +55,15 @@ class TaskCreate(BaseModel):
                 )
         return self
 
+    @model_validator(mode="after")
+    def validate_milestone(self):
+        if self.task_type == TaskTypeEnum.MILESTONE:
+            if self.timestamp:
+                return self
+        raise HTTPException(
+            status_code=422, detail="Type milestone needs timestamp."
+        )
+
 
 class TaskUpdate(BaseModel):
     name: Optional[str] = Field(min_length=3, max_length=35, default=None)
@@ -72,6 +81,15 @@ class TaskUpdate(BaseModel):
                     detail="Timestamp is only available for type 'milestone'",
                 )
         return self
+
+    @model_validator(mode="after")
+    def validate_milestone(self):
+        if self.task_type == TaskTypeEnum.MILESTONE:
+            if self.timestamp:
+                return self
+        raise HTTPException(
+            status_code=422, detail="Type milestone needs timestamp."
+        )
 
 
 class TaskUpdateStatus(BaseModel):
