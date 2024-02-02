@@ -17,7 +17,6 @@ async def create_new_task(body: TaskCreate, session: AsyncSession) -> TaskShow:
             description=body.description,
             task_type=body.task_type,
             task_status=body.task_status,
-            collaborators=body.collaborators,
             timestamp=body.timestamp,
         )
         return TaskShow(
@@ -27,7 +26,6 @@ async def create_new_task(body: TaskCreate, session: AsyncSession) -> TaskShow:
             name=task.name,
             task_type=task.task_type,
             task_status=task.task_status,
-            collaborators=task.collaborators,
             description=task.description,
             timestamp=task.timestamp,
         )

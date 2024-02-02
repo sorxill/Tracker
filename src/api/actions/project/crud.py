@@ -12,13 +12,13 @@ async def create_new_project(body: ProjectCreate, session: AsyncSession) -> Proj
         project_dal = ProjectDAL(session)
         project = await project_dal.dal_create_project(
             name=body.name,
-            author=body.author,
+            author_id=body.author_id,
             description=body.description,
         )
         return ProjectShow(
             name=project.name,
             description=project.description,
-            author=project.author,
+            author_id=project.author_id,
             project_id=project.project_id,
             is_active=project.is_active,
         )

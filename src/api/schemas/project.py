@@ -6,7 +6,7 @@ from pydantic import UUID4, BaseModel, Field
 class ProjectShow(BaseModel):
     name: str = Field(min_length=3, max_length=25)
     description: Optional[str] = Field(max_length=120, default=None)
-    author: UUID4
+    author_id: UUID4
     project_id: UUID4
     is_active: bool
 
@@ -14,7 +14,7 @@ class ProjectShow(BaseModel):
 class ProjectCreate(BaseModel):
     name: str = Field(min_length=3, max_length=25)
     description: Optional[str] = Field(max_length=120, default=None)
-    author: UUID4
+    author_id: UUID4
 
 
 class ProjectDelete(BaseModel):
