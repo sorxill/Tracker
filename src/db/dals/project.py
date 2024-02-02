@@ -15,12 +15,12 @@ class ProjectDAL:
     async def dal_create_project(
         self,
         name: str,
-        author: UUID,
+        author_id: UUID,
         **kwargs,
     ) -> Project:
         new_project = Project(
             name=name,
-            author=author,
+            author_id=author_id,
             description=kwargs.get("description"),
         )
         self.db_session.add(new_project)

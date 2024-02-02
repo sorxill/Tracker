@@ -19,13 +19,30 @@ class User(Base):
     hashed_password: Mapped[BYTEA] = mapped_column(BYTEA, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    author_task_relationship = relationship(
+    tasks = relationship(
         "Task",
-        back_populates="author_relationship",
+        back_populates="author",
         lazy="selectin",
     )
 
+    projects = relationship(
+        "Project",
+        back_populates="author",
+    )
+
+    collaborations = relationship(
+        "Project",
+        secondary="project_collaborators",
+    )
+
+    task_collaborations = relationship(
+        "Task",
+        secondary="tasks_collaborators",
+    )
+
     def __repr__(self) -> str:
-        return f"User(user_id={self.user_id!r}, name={self.name!r}, \
-        surname={self.surname!r}, email={self.email!r}, hashed_password={self.hashed_password!r}, \
-        is_active={self.is_active!r})"
+        return (
+            f"User(user_id={self.user_id!r}, name={self.name!r}, "
+            f"surname={self.surname!r}, email={self.email!r}, "
+            f" hashed_password={self.hashed_password!r}, is_active={self.is_active!r})"
+        )
