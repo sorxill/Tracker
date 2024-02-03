@@ -24,3 +24,8 @@ class ProjectDelete(BaseModel):
 class ProjectUpdate(BaseModel):
     name: Optional[str] = Field(min_length=3, max_length=25, default=None)
     description: Optional[str] = Field(max_length=120, default=None)
+
+
+class ProjectAddContributor(BaseModel):
+    project_id: UUID4
+    collaborators_id: UUID4
