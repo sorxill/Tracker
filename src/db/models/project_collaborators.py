@@ -1,7 +1,8 @@
 import uuid
 
-from sqlalchemy import ForeignKey, Integer
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import UUID
 
 from .base import Base
 
@@ -9,9 +10,8 @@ from .base import Base
 class ProjectCollaborators(Base):
     __tablename__ = "project_collaborators"
 
-    id: Mapped[int] = mapped_column(
-        Integer,
-        primary_key=True,
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
     project_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("projects.project_id"),
