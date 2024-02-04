@@ -28,7 +28,10 @@ user_router = APIRouter(prefix="/user", tags=["user"])
 
 
 @user_router.post("/create", response_model=UserShow)
-async def create_user(body: UserCreate, db: AsyncSession = Depends(get_db)):
+async def create_user(
+    body: UserCreate,
+    db: AsyncSession = Depends(get_db),
+):
     try:
         return await create_new_user(body, db)
     except IntegrityError as err:

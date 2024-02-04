@@ -21,7 +21,6 @@ class TaskDAL:
         description: str,
         task_type: str,
         task_status: str,
-        collaborators: UUID,
         **kwargs,
     ) -> Task:
         new_task = Task(
@@ -31,7 +30,6 @@ class TaskDAL:
             description=description,
             task_type=task_type,
             task_status=task_status,
-            collaborators=collaborators,
             timestamp=kwargs.get("timestamp"),
         )
         self.db_session.add(new_task)

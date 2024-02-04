@@ -14,18 +14,31 @@ class Project(Base):
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
     name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    author: Mapped[uuid.UUID] = mapped_column(
+    author_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.user_id"), nullable=False
     )
     description: Mapped[str] = mapped_column(String, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    project_task_relationship = relationship(
+    tasks = relationship(
         "Task",
-        back_populates="project_relationship",
+        back_populates="project",
         lazy="selectin",
     )
 
+    author = relationship(
+        "User",
+        back_populates="projects",
+    )
+
+    collaborators = relationship(
+        "User",
+        secondary="project_collaborators",
+    )
+
     def __repr__(self) -> str:
-        return f"Project(project_id={self.project_id!r}, name={self.name!r},\
-        author={self.author!r}, description={self.description!r}, is_active={self.is_active!r})"
+        return (
+            f"Project(project_id={self.project_id!r}, name={self.name!r}, "
+            f"author={self.author_id!r}, description={self.description!r}, "
+            f"is_active={self.is_active!r})"
+        )

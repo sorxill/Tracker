@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -12,8 +13,16 @@ from src.api.actions.project.crud import (
     read_project_by_name,
     update_project,
 )
+from src.api.actions.project.utils import (
+    add_projects_contributor,
+    get_project_contributors,
+    get_projects_by_author,
+    get_projects_contributor,
+)
+from src.api.actions.user.crud import read_user_by_id
 from src.api.handlers.login import auth_check_user_info
 from src.api.schemas.project import (
+    ProjectAddContributor,
     ProjectCreate,
     ProjectDelete,
     ProjectShow,
@@ -97,3 +106,99 @@ async def delete_project_by_id(
             status_code=404, detail=f"Project with id {project_id} not found."
         )
     return ProjectDelete(project_id=project_delete_id)
+
+
+@project_router.get("/{author_id}/all_projects", response_model=List[ProjectShow])
+async def get_task_by_author_all(
+    author_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
+    check_id = await read_user_by_id(author_id, db)
+    if check_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"User with id {author_id} not found."
+        )
+
+    projects = await get_projects_by_author(
+        author_id,
+        db,
+    )
+    if projects is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Author with id {author_id} don't have projects.",
+        )
+    return projects
+
+
+@project_router.post("/add_contributor", response_model=ProjectAddContributor)
+async def add_contributor(
+    project_id: UUID,
+    contributor_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
+    check_user_id = await read_user_by_id(
+        contributor_id,
+        db,
+    )
+    if check_user_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"User with id {contributor_id} not found."
+        )
+
+    check_project_id = await read_project_by_id(
+        project_id,
+        db,
+    )
+    if check_project_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"Project with id {project_id} not found."
+        )
+
+    check_contributor_exist = await get_projects_contributor(
+        project_id,
+        contributor_id,
+        db,
+    )
+    if check_contributor_exist is not None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Contributor with id {contributor_id} already exists.",
+        )
+
+    try:
+        return await add_projects_contributor(
+            project_id=project_id,
+            contributor_id=contributor_id,
+            session=db,
+        )
+    except IntegrityError as err:
+        logger.error(err)
+        raise HTTPException(status_code=503, detail=f"Database error: {err}") from err
+
+
+@project_router.get(
+    "/{project_id}/contributors", response_model=List[ProjectAddContributor]
+)
+async def get_project_all_contributors(
+    project_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserForToken = Depends(auth_check_user_info),
+):
+    check_project_id = await read_project_by_id(project_id, db)
+    if check_project_id is None:
+        raise HTTPException(
+            status_code=404, detail=f"Project with id {project_id} not found."
+        )
+    contributors = await get_project_contributors(
+        project_id,
+        db,
+    )
+    if contributors is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Project with id {project_id} has no one contributor.",
+        )
+    return contributors
