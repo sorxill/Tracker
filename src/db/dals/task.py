@@ -77,6 +77,5 @@ class TaskDAL:
         query = select(Task).where(Task.author_id == author_id).order_by(Task.timestamp)
         res = await self.db_session.execute(query)
         task_row = res.scalars().all()
-        if task_row is None:
-            return None
-        return task_row
+        if task_row:
+            return task_row
