@@ -13,6 +13,8 @@ services:
     build: .
     restart: on-failure
     command: sh /app/docker/app.sh
+    networks:
+      - work
 
   fastapi_db:
     container_name: fastapi_db
@@ -25,6 +27,24 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - work
+
+  fastapi_db_test:
+    container_name: fastapi_db_test
+    image: postgres:16.1-alpine3.19
+    environment:
+      POSTGRES_USER: "${DB_USER_TEST}"
+      POSTGRES_PASSWORD: "${DB_PASS_TEST}"
+      POSTGRES_DB: "${DB_NAME_TEST}"
+    ports:
+      - "5433:5432"
+    networks:
+      - work
 
 volumes:
   pgdata: {}
+
+networks:
+  work:
+    driver: bridge
