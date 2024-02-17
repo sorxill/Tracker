@@ -1,3 +1,7 @@
+"""
+Login utils handlers
+"""
+
 from fastapi import Depends, Form, HTTPException
 from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from jwt import InvalidTokenError
@@ -24,6 +28,10 @@ async def validate_auth_user(
     password: str = Form(),
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Async function to validate username(email) and password with database
+    """
+
     unauthorized_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="invalid email or password",
@@ -48,6 +56,10 @@ async def validate_auth_user(
 async def get_current_token_payload(
     token: str = Depends(oauth2_scheme),
 ) -> dict:
+    """
+    Async def to get token payload from auth scheme
+    """
+
     try:
         payload = JWT.decode_jwt(
             token=token,
@@ -64,6 +76,10 @@ async def get_current_auth_user(
     payload: dict = Depends(get_current_token_payload),
     db: AsyncSession = Depends(get_db),
 ) -> UserForToken:
+    """
+    Async def to get the current user info payload
+    """
+
     email = payload.get("email")
     user_db = await read_user_by_email(email, db)
     if user_db:

@@ -1,3 +1,7 @@
+"""
+Project Actions
+"""
+
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,6 +12,10 @@ from src.db.models.project import Project
 
 
 async def create_new_project(body: ProjectCreate, session: AsyncSession) -> ProjectShow:
+    """
+    Action to create a new project
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         project = await project_dal.dal_create_project(
@@ -25,6 +33,10 @@ async def create_new_project(body: ProjectCreate, session: AsyncSession) -> Proj
 
 
 async def read_project_by_name(name: str, session: AsyncSession) -> Project | None:
+    """
+    Action to get the project by name
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         project = await project_dal.dal_get_project_by_name(name)
@@ -33,6 +45,10 @@ async def read_project_by_name(name: str, session: AsyncSession) -> Project | No
 
 
 async def read_project_by_id(project_id: UUID, session: AsyncSession) -> Project | None:
+    """
+    Action to get project by uuid
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         project = await project_dal.dal_get_project_by_id(project_id)
@@ -41,6 +57,10 @@ async def read_project_by_id(project_id: UUID, session: AsyncSession) -> Project
 
 
 async def delete_project(project_id, session) -> UUID | None:
+    """
+    Action to delete project by project uuid
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         deleted_project_id = await project_dal.dal_delete_project(
@@ -54,6 +74,10 @@ async def update_project(
     session,
     updated_project_params: dict,
 ) -> Project | None:
+    """
+    Action to update project params by project name
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         updated_project = await project_dal.dal_update_project(

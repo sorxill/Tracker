@@ -1,3 +1,7 @@
+"""
+User handlers
+"""
+
 from logging import getLogger
 from uuid import UUID
 
@@ -32,6 +36,10 @@ async def create_user(
     body: UserCreate,
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Handler to create a new user
+    """
+
     try:
         return await create_new_user(body, db)
     except IntegrityError as err:
@@ -45,6 +53,10 @@ async def get_user_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get the user info by uuid
+    """
+
     user = await read_user_by_id(user_id, db)
     if user is None:
         raise HTTPException(
@@ -60,6 +72,10 @@ async def get_user_by_email(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get user info by email
+    """
+
     user = await read_user_by_email(email, db)
     if user is None:
         raise HTTPException(
@@ -75,10 +91,15 @@ async def update_user_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to update a user params by user id
+    Necessary to het some params
+    """
+
     user_params = body.model_dump(exclude_none=True)
     if user_params == {}:
         raise HTTPException(status_code=422, detail="No one parameters get")
-    # this raise is don't work now.
+
     check_id = await read_user_by_id(user_id, db)
     if check_id is None:
         raise HTTPException(
@@ -98,6 +119,10 @@ async def delete_user_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to delete a user by uuid
+    """
+
     check_id = await read_user_by_id(user_id, db)
     if check_id is None:
         raise HTTPException(

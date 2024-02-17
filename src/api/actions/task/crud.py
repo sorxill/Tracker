@@ -1,3 +1,7 @@
+"""
+Task Actions
+"""
+
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,6 +12,10 @@ from src.db.models.task import Task
 
 
 async def create_new_task(body: TaskCreate, session: AsyncSession) -> TaskShow:
+    """
+    Action to create a new task
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         task = await task_dal.dal_create_task(
@@ -32,6 +40,10 @@ async def create_new_task(body: TaskCreate, session: AsyncSession) -> TaskShow:
 
 
 async def read_task_by_id(task_id: UUID, session: AsyncSession) -> Task | None:
+    """
+    Action to get task by task uuid
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         task = await task_dal.dal_get_task_by_id(task_id)
@@ -40,6 +52,10 @@ async def read_task_by_id(task_id: UUID, session: AsyncSession) -> Task | None:
 
 
 async def delete_task(task_id: UUID, session: AsyncSession) -> UUID | None:
+    """
+    Action to delete task by uuid
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         deleted_task_id = await task_dal.dal_delete_task(task_id)
@@ -49,6 +65,10 @@ async def delete_task(task_id: UUID, session: AsyncSession) -> UUID | None:
 async def update_task(
     updated_task_params: dict, task_id: UUID, session: AsyncSession
 ) -> Task | None:
+    """
+    Action to update task params by task uuid
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         updated_task = await task_dal.dal_update_task(task_id, **updated_task_params)
