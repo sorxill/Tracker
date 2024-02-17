@@ -1,5 +1,5 @@
 """
-Main endpoint
+Main endpoint of API
 """
 
 import uvicorn
@@ -18,8 +18,9 @@ tracker.include_router(routers)
 @tracker.get("/")
 def start_answer():
     """
-    Check the tests and e.t.c
+    Ping API server
     """
+
     return {
         "answer": "Success",
     }

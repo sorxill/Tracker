@@ -1,3 +1,7 @@
+"""
+Main configurations file for testing
+"""
+
 import asyncio
 from typing import Generator, Any
 

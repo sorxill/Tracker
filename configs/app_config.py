@@ -1,3 +1,7 @@
+"""
+Main config for all app
+"""
+
 import os
 from dotenv import load_dotenv
 
