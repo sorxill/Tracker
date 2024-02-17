@@ -1,3 +1,7 @@
+"""
+Database model for relationship User with Project
+"""
+
 import uuid
 
 from sqlalchemy import ForeignKey

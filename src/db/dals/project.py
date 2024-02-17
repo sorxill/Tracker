@@ -1,3 +1,7 @@
+"""
+Project queries to database
+"""
+
 from typing import Sequence
 from uuid import UUID
 
@@ -9,7 +13,9 @@ from src.db.models.project import Project
 
 
 class ProjectDAL:
-    """Data Access Layer for operating project info"""
+    """
+    Data Access Layer for operating project info
+    """
 
     def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
@@ -20,6 +26,10 @@ class ProjectDAL:
         author_id: UUID,
         **kwargs,
     ) -> Project:
+        """
+        Create a new project
+        """
+
         new_project = Project(
             name=name,
             author_id=author_id,
@@ -30,6 +40,11 @@ class ProjectDAL:
         return new_project
 
     async def dal_get_project_by_name(self, name: str) -> Project | None:
+        """
+        Get project by name
+        It is unique for project
+        """
+
         query = select(Project).where(Project.name == name, Project.is_active)
         res = await self.db_session.execute(query)
         project_row = res.fetchone()
@@ -37,6 +52,10 @@ class ProjectDAL:
             return project_row[0]
 
     async def dal_get_project_by_id(self, project_id: UUID) -> Project | None:
+        """
+        Get project by uuid
+        """
+
         query = select(Project).where(
             Project.project_id == project_id, Project.is_active
         )
@@ -46,6 +65,10 @@ class ProjectDAL:
             return project_row[0]
 
     async def dal_update_project(self, project_name: str, **kwargs) -> Project | None:
+        """
+        Update projects with not necessary params
+        """
+
         query = (
             update(Project)
             .where(Project.name == project_name, Project.is_active)
@@ -58,6 +81,10 @@ class ProjectDAL:
             return update_project_row[0]
 
     async def dal_delete_project(self, project_id: UUID) -> UUID | None:
+        """
+        Delete project by uuid
+        """
+
         query = (
             update(Project)
             .where(Project.project_id == project_id, Project.is_active)
@@ -73,6 +100,10 @@ class ProjectDAL:
         self,
         author_id: UUID,
     ) -> Sequence[Project] | None:
+        """
+        Get all projects info by author uuid
+        """
+
         query = (
             select(Project).where(Project.author_id == author_id).order_by(Project.name)
         )
@@ -86,6 +117,10 @@ class ProjectDAL:
         project_id: UUID,
         contributor_id: UUID,
     ) -> ProjectCollaborators | None:
+        """
+        Add a new project contributor by project id and contributor id
+        """
+
         new_contributor = ProjectCollaborators(
             project_id=project_id,
             collaborators_id=contributor_id,
@@ -99,6 +134,10 @@ class ProjectDAL:
         project_id: UUID,
         contributor_id: UUID,
     ) -> ProjectCollaborators | None:
+        """
+        Get info about existing contributor in project
+        """
+
         query = select(ProjectCollaborators).where(
             ProjectCollaborators.project_id == project_id,
             ProjectCollaborators.collaborators_id == contributor_id,
@@ -112,6 +151,10 @@ class ProjectDAL:
         self,
         project_id: UUID,
     ) -> Sequence[ProjectCollaborators] | None:
+        """
+        Get all project collaborators
+        """
+
         query = select(ProjectCollaborators).where(
             ProjectCollaborators.project_id == project_id
         )
