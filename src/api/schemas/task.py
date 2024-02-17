@@ -136,6 +136,7 @@ class TaskUpdateStatus(BaseModel):
     """
     Schema for status task update
     """
+
     task_status: TaskStatusEnum
 
 
@@ -144,4 +145,5 @@ class TaskDelete(BaseModel):
     Schema for delete task
     Return deleted task id
     """
+
     task_id: UUID4

@@ -51,5 +51,6 @@ class ProjectAddContributor(BaseModel):
     """
     Schema for add a new collaborator
     """
+
     project_id: UUID4
     collaborators_id: UUID4
