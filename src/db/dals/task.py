@@ -1,3 +1,7 @@
+"""
+Task queries to database
+"""
+
 from typing import Sequence
 from uuid import UUID
 
@@ -8,7 +12,9 @@ from src.db.models.task import Task
 
 
 class TaskDAL:
-    """Data Access Layer for operating task info"""
+    """
+    Data Access Layer for operating task info
+    """
 
     def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
@@ -23,6 +29,10 @@ class TaskDAL:
         task_status: str,
         **kwargs,
     ) -> Task:
+        """
+        Create a new task
+        """
+
         new_task = Task(
             project_id=project_id,
             author_id=author_id,
@@ -37,6 +47,10 @@ class TaskDAL:
         return new_task
 
     async def dal_get_task_by_id(self, task_id: UUID) -> Task | None:
+        """
+        Get task bu uuid
+        """
+
         query = select(Task).where(Task.task_id == task_id)
         res = await self.db_session.execute(query)
         task_row = res.fetchone()
@@ -44,6 +58,10 @@ class TaskDAL:
             return task_row[0]
 
     async def dal_update_task(self, task_id: UUID, **kwargs) -> Task | None:
+        """
+        Update task with not necessary params
+        """
+
         query = (
             update(Task).where(Task.task_id == task_id).values(kwargs).returning(Task)
         )
@@ -53,6 +71,10 @@ class TaskDAL:
             return updated_task_row[0]
 
     async def dal_delete_task(self, task_id: UUID) -> UUID | None:
+        """
+        Delete task by id
+        """
+
         query = delete(Task).where(Task.task_id == task_id).returning(Task.task_id)
         res = await self.db_session.execute(query)
         deleted_task_id_row = res.fetchone()
@@ -62,6 +84,10 @@ class TaskDAL:
     async def dal_update_task_status(
         self, task_id: UUID, task_status: str
     ) -> Task | None:
+        """
+        Update task status only
+        """
+
         query = (
             update(Task)
             .where(Task.task_id == task_id)
@@ -74,6 +100,10 @@ class TaskDAL:
             return updated_task_row[0]
 
     async def dal_get_task_by_author(self, author_id: UUID) -> Sequence[Task] | None:
+        """
+        Get all tasks by author uuid
+        """
+
         query = select(Task).where(Task.author_id == author_id).order_by(Task.timestamp)
         res = await self.db_session.execute(query)
         task_row = res.scalars().all()

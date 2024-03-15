@@ -1,3 +1,7 @@
+"""
+Task Handlers
+"""
+
 from logging import getLogger
 from typing import List
 from uuid import UUID
@@ -36,6 +40,10 @@ async def create_task(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to create a new task
+    """
+
     try:
         return await create_new_task(body, db)
     except IntegrityError as err:
@@ -52,6 +60,10 @@ async def get_task_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get the task info by uuid
+    """
+
     task = await read_task_by_id(task_id, db)
     if task is None:
         raise HTTPException(
@@ -69,11 +81,16 @@ async def update_task_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to update a task params by user id
+    Necessary to het some params
+    """
+
     task_params = body.model_dump(exclude_none=True)
     if task_params == {}:
         raise HTTPException(
             status_code=422,
-            detail="No parameters received",
+            detail="No one parameters get.",
         )
 
     check_task = await read_task_by_id(task_id, db)
@@ -99,6 +116,10 @@ async def delete_task_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to delete a task by uuid
+    """
+
     deleted_task_id = await delete_task(task_id, db)
     if deleted_task_id is None:
         raise HTTPException(
@@ -115,6 +136,10 @@ async def update_task_status_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to update task status
+    """
+
     task_status = body.task_status
 
     check_task = await read_task_by_id(task_id, db)
@@ -140,6 +165,11 @@ async def get_task_by_author_all(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get all tasks for a given user
+    Which is task author
+    """
+
     check_id = await read_user_by_id(author_id, db)
     if check_id is None:
         raise HTTPException(

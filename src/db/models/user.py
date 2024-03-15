@@ -1,3 +1,8 @@
+"""
+Database model for User
+Relationships with: Task, Project
+"""
+
 import uuid
 
 from sqlalchemy import Boolean, String

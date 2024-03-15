@@ -1,3 +1,7 @@
+"""
+Login Handlers
+"""
+
 from logging import getLogger
 
 from fastapi import APIRouter, Depends
@@ -14,6 +18,11 @@ login_router = APIRouter(prefix="/login", tags=["login"])
 
 @login_router.post("/auth", response_model=TokenInfo)
 async def auth_user_jwt(user: UserForToken = Depends(validate_auth_user)):
+    """
+    Handler for authenticating user
+    Get the email and user id
+    """
+
     jwt_payload = {
         "email": user.email,
         "user_id": str(user.user_id),
@@ -29,6 +38,10 @@ async def auth_user_jwt(user: UserForToken = Depends(validate_auth_user)):
 async def auth_check_user_info(
     user: UserForToken = Depends(get_current_auth_user),
 ):
+    """
+    Handler to check the user info is correct
+    """
+
     return {
         "email": user.email,
         "user_id": user.user_id,

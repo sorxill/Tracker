@@ -1,3 +1,7 @@
+"""
+Util Actions for project
+"""
+
 from typing import Sequence
 from uuid import UUID
 
@@ -11,6 +15,10 @@ async def get_projects_by_author(
     author_id: UUID,
     session: AsyncSession,
 ) -> Sequence[Project] | None:
+    """
+    Action to get all projects by author
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         all_tasks = await project_dal.dal_get_projects_by_author(
@@ -24,6 +32,10 @@ async def add_projects_contributor(
     contributor_id: UUID,
     session: AsyncSession,
 ) -> ProjectCollaborators | None:
+    """
+    Action to add contributor for project
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         add_contributor = await project_dal.dal_add_projects_contributor(
@@ -38,6 +50,10 @@ async def get_projects_contributor(
     contributor_id: UUID,
     session: AsyncSession,
 ) -> ProjectCollaborators | None:
+    """
+    Action to get contributor from project
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         get_contributor = await project_dal.dal_get_projects_contributor(
@@ -51,6 +67,10 @@ async def get_project_contributors(
     project_id: UUID,
     session: AsyncSession,
 ) -> Sequence[ProjectCollaborators] | None:
+    """
+    Action to get all contributor from project
+    """
+
     async with session.begin():
         project_dal = ProjectDAL(session)
         all_contributors = await project_dal.dal_get_project_collaborators(

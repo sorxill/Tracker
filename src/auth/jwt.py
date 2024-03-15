@@ -1,3 +1,8 @@
+"""
+JWT
+Encode and Decode a jwt tokens
+"""
+
 from datetime import datetime, timedelta
 
 import jwt
@@ -16,6 +21,10 @@ PUBLIC = PUBLIC_KEY_JWT
 
 
 class JWT:
+    """
+    JWT class uses jwt authentication
+    """
+
     @staticmethod
     def encode_jwt(
         payload: dict,
@@ -24,6 +33,10 @@ class JWT:
         expire_minutes: int = EXPIRE_M,
         expire_timedelta: timedelta | None = None,
     ) -> str:
+        """
+        Method to encode payload info
+        """
+
         to_encode = payload.copy()
         now = datetime.utcnow()
         if expire_timedelta:
@@ -47,6 +60,10 @@ class JWT:
         public_key: str = PUBLIC,
         algorithm: str = ALG,
     ) -> dict:
+        """
+        Method to decode payload info from jwt
+        """
+
         decoded = jwt.decode(
             token,
             public_key,

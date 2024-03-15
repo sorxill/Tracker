@@ -1,3 +1,7 @@
+"""
+Project Handlers
+"""
+
 from logging import getLogger
 from typing import List
 from uuid import UUID
@@ -42,6 +46,10 @@ async def create_project(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to create a new project
+    """
+
     try:
         return await create_new_project(body, db)
     except IntegrityError as err:
@@ -55,6 +63,10 @@ async def get_project_by_name(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get the project info by name
+    """
+
     project = await read_project_by_name(name, db)
     if project is None:
         raise HTTPException(
@@ -71,6 +83,11 @@ async def update_project_by_name(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to update a project params by project name
+    Necessary to het some params
+    """
+
     project_params = body.model_dump(exclude_none=True)
     if project_params == {}:
         raise HTTPException(status_code=422, detail="No one parameters get")
@@ -94,6 +111,10 @@ async def delete_project_by_id(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to delete a project by uuid
+    """
+
     check_id = await read_project_by_id(project_id, db)
     if check_id is None:
         raise HTTPException(
@@ -114,6 +135,10 @@ async def get_task_by_author_all(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get all projects by author id
+    """
+
     check_id = await read_user_by_id(author_id, db)
     if check_id is None:
         raise HTTPException(
@@ -139,6 +164,10 @@ async def add_contributor(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to add a contributor to a project by contributor id
+    """
+
     check_user_id = await read_user_by_id(
         contributor_id,
         db,
@@ -187,6 +216,10 @@ async def get_project_all_contributors(
     db: AsyncSession = Depends(get_db),
     current_user: UserForToken = Depends(auth_check_user_info),
 ):
+    """
+    Handler to get all contributors from this project
+    """
+
     check_project_id = await read_project_by_id(project_id, db)
     if check_project_id is None:
         raise HTTPException(

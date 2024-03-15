@@ -1,3 +1,8 @@
+"""
+Database model for relationship Task with Project
+"""
+
+
 import uuid
 
 from sqlalchemy import ForeignKey

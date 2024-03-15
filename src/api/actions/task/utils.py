@@ -1,3 +1,7 @@
+"""
+Util Actions for task
+"""
+
 from typing import Sequence
 from uuid import UUID
 
@@ -12,6 +16,10 @@ async def update_task_status(
     task_status: str,
     session: AsyncSession,
 ) -> Task | None:
+    """
+    Action to update task status by task id
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         updated_task = await task_dal.dal_update_task_status(
@@ -25,6 +33,10 @@ async def get_tasks_by_author(
     author_id: UUID,
     session: AsyncSession,
 ) -> Sequence[Task] | None:
+    """
+    Action to get all tasks by author
+    """
+
     async with session.begin():
         task_dal = TaskDAL(session)
         all_tasks = await task_dal.dal_get_task_by_author(

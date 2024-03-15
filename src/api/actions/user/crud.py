@@ -1,3 +1,7 @@
+"""
+User Actions
+"""
+
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,6 +13,10 @@ from src.db.models.user import User
 
 
 async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
+    """
+    Action to create a new user
+    """
+
     async with session.begin():
         user_dal = UserDAL(session)
         user = await user_dal.dal_create_user(
@@ -28,6 +36,10 @@ async def create_new_user(body: UserCreate, session: AsyncSession) -> UserShow:
 
 
 async def read_user_by_email(email: str, session: AsyncSession) -> User | None:
+    """
+    Action to get user by email
+    """
+
     async with session.begin():
         user_dal = UserDAL(session)
         user = await user_dal.dal_get_user_by_email(email)
@@ -36,6 +48,10 @@ async def read_user_by_email(email: str, session: AsyncSession) -> User | None:
 
 
 async def read_user_by_id(user_id, session) -> User | None:
+    """
+    Action to get user by uuid
+    """
+
     async with session.begin():
         user_dal = UserDAL(session)
         user = await user_dal.dal_get_user_by_id(
@@ -46,6 +62,10 @@ async def read_user_by_id(user_id, session) -> User | None:
 
 
 async def delete_user(user_id, session) -> UUID | None:
+    """
+    Action to delete user by uuid
+    """
+
     async with session.begin():
         user_dal = UserDAL(session)
         deleted_user_id = await user_dal.dal_delete_user(
@@ -55,6 +75,10 @@ async def delete_user(user_id, session) -> UUID | None:
 
 
 async def update_user(updated_user_params: dict, user_id: UUID, session) -> User | None:
+    """
+    Action to update user params by uuid
+    """
+
     async with session.begin():
         user_dal = UserDAL(session)
         updated_user = await user_dal.dal_update_user(
